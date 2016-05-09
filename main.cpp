@@ -65,13 +65,13 @@ void readDictData(char* path){
 NodeTu* search_node(NodeTu* dict, string tu){
    NodeTu* p = dict;
    while (p!=NULL){
-   	if(p->tu == tu)
-		return p;
-    else if (tu < p->tu){
-      	p = p->left;
-	} else {
-		p = p->right;
-	}	
+	   	if(p->tu == tu)
+			return p;
+	    else if (tu < p->tu){
+	      	p = p->left;
+		} else {
+			p = p->right;
+		}	
    }
    return NULL;
 }
@@ -121,6 +121,13 @@ void readDocument(char* path){
 	}
 }
 
+void editTu(NodeTu* dict, string tu, string nghia){
+	NodeTu* res = search_node(dict, tu);
+	if (res != NULL){
+		res->nghia = nghia;
+	}
+	return;
+}
 
 int main(int argc, char *argv[]){
 	char* path = "E:\\dict.txt";
@@ -129,9 +136,12 @@ int main(int argc, char *argv[]){
 	printDict(dict);
 	cout<<"---------------------------------"<<endl;
 		
-	char* path2 = "E:\\doc.txt";
-	readDocument(path2);
-
+//	char* path2 = "E:\\doc.txt";
+//	readDocument(path2);
+	
+	editTu(dict, "today", "ngay hom nay");
+	printDict(dict);
+	
 	getch();
 	return 0;
 }
