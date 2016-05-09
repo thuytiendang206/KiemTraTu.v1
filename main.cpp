@@ -32,9 +32,9 @@ int insertNodeTu(NodeTu* &dict, string tu, string nghia){
 	return 1; // thanh cong
 }
 
-void readDictData(char* path){
+void readDictData(/*char* path*/){
 	fstream f;
-	f.open(path, ios::in);
+	f.open(/*path*/"E:\\dict.txt", ios::in);
 	string tu;
 	string nghia;
 	while(!f.eof()){
@@ -128,10 +128,59 @@ void editTu(NodeTu* dict, string tu, string nghia){
 	}
 	return;
 }
-
+void removeDict( NodeTu* &dict){
+	if (dict!=NULL)
+	{
+		removeDict(dict->left);
+		removeDict(dict->right);
+		delete(dict);
+	}
+		
+}	
+void searchStandFor(NodeTu* &p,NodeTu* &q)
+{
+	if(q->left !=NULL)
+	{
+		searchStandFor(p,q->left);
+	}
+	else
+	{
+		p->tu=q->tu;
+		p->nghia=q->nghia;
+		p=q;
+		q=q->right;
+	}	
+}	
+int delNode(NodeTu* &dict, string tu)
+{
+	if (dict==NULL) return 0;//cây rong
+	if (dict->tu > tu) return delNode(dict->left,tu);
+	if (dict->tu < tu) return delNode(dict->right,tu);
+	if (dict->tu==tu)
+	{
+		NodeTu *p=dict;
+		if(dict->left==NULL)
+		{
+			dict=dict->right;
+		}
+		else
+		{
+			if (dict->right==NULL)
+			{
+				dict=dict->left;
+			}	
+			else
+			{
+				NodeTu *q=dict->right;
+				searchStandFor(p,q);
+			}	
+		}
+		delete(p);	
+	}
+}
 int main(int argc, char *argv[]){
-	char* path = "E:\\dict.txt";
-	readDictData(path);
+	//char* path = "E:\\dict.txt";
+	readDictData(/*path*/);
 	cout<<"---------- Tu Dien --------------"<<endl;
 	printDict(dict);
 	cout<<"---------------------------------"<<endl;
@@ -140,6 +189,7 @@ int main(int argc, char *argv[]){
 //	readDocument(path2);
 	
 	editTu(dict, "today", "ngay hom nay");
+	delNode(dict,"today");
 	printDict(dict);
 	
 	getch();
